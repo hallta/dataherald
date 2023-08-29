@@ -7,4 +7,4 @@ curl -X 'POST' \
   -d '{
         "question": "are google searches more popular than amazon searches??",
         "db_alias": "google_trends"
-    }' | jq && echo
+    }' && echo # | jq && echo

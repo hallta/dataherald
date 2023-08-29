@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
-echo 'drop table google_trends;' | sqlite3 mydb.db 
-cat google_trends.sql | sqlite3 mydb.db
+echo 'drop table google_trends;' | sqlite3 ../mydb.db 
+cat google_trends.sql | sqlite3 ../mydb.db
 
 
 curl -X 'POST' \
@@ -27,12 +27,22 @@ curl -X 'GET' \
     'localhost/api/v1/scanned-databases?db_alias=google_trends' \
     -H 'accept: application/json' && echo 
 
+desc=$(cat << EOF
+This is a table of data that representes Google trends data on web searches for
+the compnanies google, facebook, netflix, and amazon from 2004
+
+popularity is defined by counting the number of searches over time.
+the higher numer of searches, the more popular the popularity is. 
+searches are the values of each named column.
+EOF
+)
+
 curl -X 'PATCH' \
   'localhost/api/v1/scanned-db/google_trends/google_trends' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "description": "Google trends data on web searches for google, facebook, netflix, and amazon from 2004",
+  "description": "${desc}",
   "columns": [
     {
       "name": "date",

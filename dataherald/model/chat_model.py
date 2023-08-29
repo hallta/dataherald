@@ -17,12 +17,13 @@ class ChatModel(LLMModel):
 
     @override
     def get_model(self, **kwargs: Any) -> Any:
-        if self.openai_api_key:
+
+        if self.google_api_key:
+            self.model = ChatGooglePalm(model_name=self.model_name, **kwargs)
+        elif self.openai_api_key:
             self.model = ChatOpenAI(model_name=self.model_name, **kwargs)
         elif self.anthropic_api_key:
             self.model = ChatAnthropic(model=self.model, **kwargs)
-        elif self.google_api_key:
-            self.model = ChatGooglePalm(model_name=self.model_name, **kwargs)
         else:
             raise ValueError("No valid API key environment variable found")
         return self.model
